@@ -8,3 +8,5 @@ build/
 agent_storage.json
 *_data.json
 grant-application.md
+.env
+.env.*

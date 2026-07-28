@@ -1,5 +1,8 @@
 # uagent-testkit
 
+[![PyPI](https://img.shields.io/pypi/v/uagent-testkit.svg)](https://pypi.org/project/uagent-testkit/)
+[![CI](https://github.com/pgalyen1987/fetchai_harness/actions/workflows/ci.yml/badge.svg)](https://github.com/pgalyen1987/fetchai_harness/actions/workflows/ci.yml)
+
 Test [Fetch.ai uAgents](https://github.com/fetchai/uAgents) without a network, a wallet, or a `sleep()`.
 
 ```python

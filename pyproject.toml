@@ -10,12 +10,19 @@ readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
 keywords = ["fetchai", "uagents", "agentverse", "testing", "pytest", "asi"]
+authors = [{ name = "pgalyen1987", email = "pgalyen87@gmail.com" }]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Framework :: Pytest",
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Testing",
 ]
+
 dependencies = [
     "uagents>=0.22",
 ]
@@ -25,6 +32,11 @@ test = [
     "pytest>=8.0",
     "pytest-asyncio>=0.24",
 ]
+
+[project.urls]
+Homepage = "https://github.com/pgalyen1987/fetchai_harness"
+Repository = "https://github.com/pgalyen1987/fetchai_harness"
+Issues = "https://github.com/pgalyen1987/fetchai_harness/issues"
 
 [project.entry-points.pytest11]
 uagent_testkit = "uagent_testkit.plugin"
