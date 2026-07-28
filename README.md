@@ -43,6 +43,8 @@ records instead of transmitting. No sockets, no registration, no waiting.
   is testable without waiting an hour.
 - **Multi-agent conversations replay deterministically**, with a loop guard instead of
   a hung test.
+- **Agents that read BNB Chain are testable offline** — `ChainDouble` answers BEP-20
+  and balance queries from state your test sets, and blocks any other outbound HTTP.
 
 ## Install
 
@@ -183,6 +185,49 @@ async def test_chat():
     assert result.replies(ChatAcknowledgement)
     assert result.replies(ChatMessage)[0].text() == "here is what we have"
 ```
+
+## Agents that read BNB Chain
+
+The harness intercepts `ctx.send`, which covers agent-to-agent messaging. It does not
+cover a handler that reaches out to an RPC endpoint — an agent reading a BEP-20 balance
+still talks to the network during a test. `ChainDouble` closes that gap:
+
+```python
+from uagent_testkit import ChainDouble, FET_BSC, harness
+
+async def test_treasury_agent():
+    chain = ChainDouble()
+    chain.add_token(FET_BSC, symbol="FET", decimals=18,
+                    balances={wallet: 5_500_000_000_000_000_000})
+
+    h = harness(treasury_agent)
+    with chain.install():
+        result = await h.deliver(CheckBalance(wallet=wallet))
+
+    assert result.reply(BalanceReport).amount == 5.5
+    chain.assert_called("eth_call")
+```
+
+It patches whichever of `requests`, `httpx` and `aiohttp` are importable, so it works
+whether the agent uses web3.py or raw async HTTP, and it understands web3.py's
+JSON-encoded `data=` body as well as `json=`.
+
+Supported: `eth_call` (BEP-20 `balanceOf`, `symbol`, `name`, `decimals`, `totalSupply`),
+`eth_getBalance`, `eth_getCode`, `eth_blockNumber`, `eth_chainId`, batched requests.
+
+Two deliberate refusals, both of which turn a silent pass into a loud failure:
+
+```python
+# reading state the test never set up
+with pytest.raises(UnstubbedCall):
+    ...                       # rather than quietly returning zero
+
+# any non-JSON-RPC HTTP from inside a handler
+with pytest.raises(NetworkCallBlocked):
+    ...                       # rather than hitting a real API in CI
+```
+
+There's also a `bsc` fixture that gives you an installed double directly.
 
 ## pytest fixtures
 

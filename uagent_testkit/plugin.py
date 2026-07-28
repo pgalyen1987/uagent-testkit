@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 
 from ._loop import ensure_event_loop
+from .chain import ChainDouble
 from .harness import AgentHarness, harness as _harness
 from .network import AgentNetwork
 
@@ -41,6 +42,19 @@ def agent_harness():
         return _harness(agent, persist_storage=persist_storage)
 
     return _factory
+
+
+@pytest.fixture
+def bsc():
+    """An installed ChainDouble standing in for BNB Chain.
+
+        def test_reads_balance(bsc):
+            bsc.add_token(FET_BSC, symbol="FET", balances={wallet: 10**18})
+            ...
+    """
+    double = ChainDouble()
+    with double.install():
+        yield double
 
 
 @pytest.fixture

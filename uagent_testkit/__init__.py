@@ -10,6 +10,12 @@
 from ._loop import ensure_event_loop
 from ._recording import Sent
 from ._storage import InMemoryStore
+from .chain import (
+    FET_BSC,
+    ChainDouble,
+    NetworkCallBlocked,
+    UnstubbedCall,
+)
 from .harness import (
     ANY,
     DEFAULT_SENDER,
@@ -31,14 +37,18 @@ __all__ = [
     "ANY",
     "AgentHarness",
     "AgentNetwork",
+    "ChainDouble",
     "ConversationTooLong",
     "DEFAULT_SENDER",
     "Delivery",
     "Exchange",
+    "FET_BSC",
     "HandlerNotFound",
     "InMemoryStore",
+    "NetworkCallBlocked",
     "Sent",
     "Transcript",
+    "UnstubbedCall",
     "UnverifiedSender",
     "ensure_event_loop",
     "harness",

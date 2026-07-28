@@ -31,6 +31,9 @@ dependencies = [
 test = [
     "pytest>=8.0",
     "pytest-asyncio>=0.24",
+    # exercised by the ChainDouble tests, which drive real HTTP clients
+    "requests>=2.31",
+    "aiohttp>=3.9",
 ]
 
 [project.urls]
