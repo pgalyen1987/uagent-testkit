@@ -10,3 +10,4 @@ agent_storage.json
 grant-application.md
 .env
 .env.*
+.mcp.json

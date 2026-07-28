@@ -34,9 +34,9 @@ test = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pgalyen1987/fetchai_harness"
-Repository = "https://github.com/pgalyen1987/fetchai_harness"
-Issues = "https://github.com/pgalyen1987/fetchai_harness/issues"
+Homepage = "https://github.com/pgalyen1987/uagent-testkit"
+Repository = "https://github.com/pgalyen1987/uagent-testkit"
+Issues = "https://github.com/pgalyen1987/uagent-testkit/issues"
 
 [project.entry-points.pytest11]
 uagent_testkit = "uagent_testkit.plugin"
