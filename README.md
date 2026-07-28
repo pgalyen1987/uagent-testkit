@@ -24,14 +24,17 @@ resolution, a funded wallet on some paths, and `asyncio.sleep()` calls sprinkled
 the test to wait for messages that may never arrive. That is slow, flaky, and awkward to
 run in CI.
 
-Worse, `Agent._handle_message` catches every exception a handler raises and writes it to
-a log. A handler that crashes on every message still looks like a green test. The most
-common agent bug is invisible to the most common agent test.
+There is also a subtler problem. `Agent._handle_message` catches every exception a
+handler raises and writes it to a log. That is the right call at runtime — an agent
+processes messages from peers it does not control, and one malformed message must not
+take the process down. But the same containment applies under pytest, and there is no
+strict mode to turn it off, so a handler that crashes on every message still looks
+like a green test.
 
 `uagent-testkit` routes messages straight to the registered handler with a context that
 records instead of transmitting. No sockets, no registration, no waiting.
 
-- **Handler exceptions are raised**, not swallowed into a log.
+- **Handler exceptions are raised** rather than contained into a log.
 - **Storage is in-memory**, so state doesn't leak between tests via the JSON file the
   stock `KeyValueStore` writes to your working directory.
 - **Reply contracts are enforced** — if `@on_message(replies=Pong)` doesn't send a
