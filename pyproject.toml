@@ -4,13 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "uagent-testkit"
-version = "0.1.0"
-description = "Test Fetch.ai uAgents without a network, a wallet, or a sleep()."
+version = "0.1.1"
+description = "Test Fetch.ai uAgents offline — handlers, agent-to-agent flows, and BNB Chain reads."
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
-keywords = ["fetchai", "uagents", "agentverse", "testing", "pytest", "asi"]
-authors = [{ name = "pgalyen1987", email = "pgalyen87@gmail.com" }]
+keywords = ["fetchai", "uagents", "agentverse", "asi", "agent-launch", "bnb-chain", "bsc", "web3", "testing", "pytest"]
+authors = [{ name = "Patrick Galyen", email = "pgalyen87@gmail.com" }]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Framework :: Pytest",
