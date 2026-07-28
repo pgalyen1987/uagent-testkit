@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "uagent-testkit"
+version = "0.1.0"
+description = "Test Fetch.ai uAgents without a network, a wallet, or a sleep()."
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.10"
+keywords = ["fetchai", "uagents", "agentverse", "testing", "pytest", "asi"]
+classifiers = [
+    "Framework :: Pytest",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    "uagents>=0.22",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+
+[project.entry-points.pytest11]
+uagent_testkit = "uagent_testkit.plugin"
+
+[tool.hatch.build.targets.wheel]
+packages = ["uagent_testkit"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests", "examples"]
