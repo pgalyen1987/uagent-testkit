@@ -136,7 +136,47 @@ transcript.assert_all_delivered()   # fails if anything went to an unknown addre
 ```
 
 Agents that answer each other forever raise `ConversationTooLong` after `max_rounds`
-deliveries instead of hanging the suite.
+deliveries instead of hanging the suite. This catches echo loops, which are easy to
+write and expensive to discover in production:
+
+```python
+# a keyword responder whose answer contains its own trigger word
+if "menu" in msg.text().lower():
+    await ctx.send(sender, chat("here is the menu"))   # -> contains "menu"
+```
+
+Two agents like that will talk to each other indefinitely. On a live network that is
+two agents spamming each other; here it fails in milliseconds with the transcript
+so far attached.
+
+## Protocols and the chat protocol
+
+Agents assembled from `Protocol` objects work the same way, including the shared chat
+protocol from `uagents_core` that Agentverse and Agent Launch agents use:
+
+```python
+chat = Protocol(spec=chat_protocol_spec)
+
+@chat.on_message(ChatMessage)
+async def on_chat(ctx: Context, sender: str, msg: ChatMessage):
+    ...
+
+agent.include(chat)
+```
+
+```python
+async def test_chat():
+    h = harness(agent)
+    result = await h.deliver(
+        ChatMessage(
+            timestamp=datetime.now(timezone.utc),
+            msg_id=uuid4(),
+            content=[TextContent(type="text", text="show me the menu")],
+        )
+    )
+    assert result.replies(ChatAcknowledgement)
+    assert result.replies(ChatMessage)[0].text() == "here is what we have"
+```
 
 ## pytest fixtures
 
